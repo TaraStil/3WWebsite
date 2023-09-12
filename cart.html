@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>3 W's</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link href="styles/custom.css" rel="stylesheet" type="text/css">
+
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/mobileservices/MobileServices.Web-1.2.5.min.js"></script>
+</head>
+<body>
+
+<div data-role="page" data-theme="a">
+    <div data-role="header" data-theme="a">
+        <h1>Cart</h1>
+    </div>
+    <div data-role="content">
+        <h3>Your Cart</h3>
+        <ul id="cart-list" data-role="listview">
+            <!-- Cart items will be displayed here using JavaScript -->
+        </ul>
+    </div>
+    <div data-role="footer" data-theme="a">
+        <h4>3W's &copy; 2023</h4>
+    </div>
+</div>
+
+<script>
+
+refreshCartList();
+
+    // Function to add an item to the cart (favorites)
+    function addToCart(itemName) {
+    // Check if the item is not already in the cart
+    var cart = getCart();
+    if (cart.indexOf(itemName) === -1) {
+        cart.push(itemName);
+        saveCart(cart);
+        refreshCartList();
+        console.log('Item added to cart:', itemName);
+    } else {
+        console.log('Item already in cart:', itemName);
+    }
+}
+
+
+    // Function to remove an item from the cart
+    function removeFromCart(itemName) {
+        var cart = getCart();
+        var index = cart.indexOf(itemName);
+        if (index !== -1) {
+            cart.splice(index, 1);
+            saveCart(cart);
+            refreshCartList();
+        }
+    }
+
+    // Function to retrieve cart items from localStorage
+    function getCart() {
+        var cart = JSON.parse(localStorage.getItem('cart')) || [];
+        return cart;
+    }
+
+    // Function to save cart items to localStorage
+    function saveCart(cart) {
+        localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
+// Function to refresh the cart list on the page
+function refreshCartList() {
+    var cart = getCart();
+    var cartList = document.getElementById('cart-list');
+    cartList.innerHTML = ''; // Clear the existing cart list
+    cart.forEach(function(item) {
+        var li = document.createElement('li');
+        li.innerHTML = '<a href="#">' + item + '</a>' +
+            '<a href="#" class="delete-button" data-item="' + item + '">Delete</a>';
+        cartList.appendChild(li);
+    });
+
+    // Add click event listeners to delete buttons
+    var deleteButtons = document.getElementsByClassName('delete-button');
+    for (var i = 0; i < deleteButtons.length; i++) {
+        deleteButtons[i].addEventListener('click', function() {
+            var itemToDelete = this.getAttribute('data-item');
+            removeFromCart(itemToDelete);
+        });
+    }
+}
+    // Call the function to initially populate the cart list on page load
+    refreshCartList();
+</script>
+</body>
+</html>

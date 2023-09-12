@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>3 W's</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+	<link rel="stylesheet" href="themes/projectheme.css" />
+	<link rel="stylesheet" href="themes/projectheme.min.css" />
+	<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
+	<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+	<script src="http://ajax.aspnetcdn.com/ajax/mobileservices/MobileServices.Web-1.2.5.min.js"></script>
+	<style>
+		#myPanelButton {
+			position: fixed;
+			top: 10px; /* Adjust top and right values as needed */
+			right: 10px;
+			z-index: 9999; /* Ensure it's on top of other content */
+		}
+	</style>
+	<!-- Include your JavaScript for cart management here -->
+	<script>
+		// Function to add an item to the cart (favorites)
+		function addToCart(itemName) {
+			// Check if the item is not already in the cart
+			var cart = getCart();
+			if (cart.indexOf(itemName) === -1) {
+				cart.push(itemName);
+				saveCart(cart);
+				refreshCartList();
+			}
+		}
+
+		// Function to remove an item from the cart
+		function removeFromCart(itemName) {
+			var cart = getCart();
+			var index = cart.indexOf(itemName);
+			if (index !== -1) {
+				cart.splice(index, 1);
+				saveCart(cart);
+				refreshCartList();
+			}
+		}
+
+		// Function to retrieve cart items from localStorage
+		function getCart() {
+			var cart = JSON.parse(localStorage.getItem('cart')) || [];
+			return cart;
+		}
+
+		// Function to save cart items to localStorage
+		function saveCart(cart) {
+			localStorage.setItem('cart', JSON.stringify(cart));
+		}
+
+		// Function to refresh the cart list on the page
+		function refreshCartList() {
+			var cart = getCart();
+			var cartList = document.getElementById('cart-list');
+			cartList.innerHTML = ''; // Clear the existing cart list
+			cart.forEach(function(item) {
+				var li = document.createElement('li');
+				li.innerHTML = '<a href="#">' + item + '</a>' +
+						'<a href="#" class="delete-button" data-item="' + item + '">Delete</a>';
+				cartList.appendChild(li);
+			});
+
+			// Add click event listeners to delete buttons
+			var deleteButtons = document.getElementsByClassName('delete-button');
+			for (var i = 0; i < deleteButtons.length; i++) {
+				deleteButtons[i].addEventListener('click', function() {
+					var itemToDelete = this.getAttribute('data-item');
+					removeFromCart(itemToDelete);
+				});
+			}
+		}
+
+		// Call the function to initially populate the cart list on page load
+		refreshCartList();
+	</script>
+</head>
+<body>
+
+</head>
+</body>
+
+<div id="page" data-role="page" data-theme="a" data-add-back-btn="true">
+	<div data-role="header" data-theme="a">
+		<div class="logo"><img src="3WLogo.png" width="218" height="200" alt=""/></div>
+	</div>
+
+	<div data-role="header">
+		<h1>Creative Crafts</h1>
+	</div>
+
+	<div data-role="content">
+		<ul data-role="listview" data-theme="c">
+			<li><a href="#section1">Resin</a></li>
+			<li><a href="#section2">Paints</a></li>
+			<li><a href="#section3">Yarn</a></li>
+			<li><a href="#section4">Seasonal</a></li>
+			<li><a href="#section5">About Me</a></li>
+			<li><a href="#section6">Checkout</a></li>
+			<li><a href="#section7">Filtered List</a></li>
+			<li><a href="#section8">Form</a></li>
+		</ul>
+	</div>
+	<div data-role="footer" data-theme="a">
+		<h4>3W's &copy; 2023</h4>
+	</div>
+</div>
+
+<div id="section1" data-role="page" data-theme="a" data-add-back-btn="true">
+	<a href="#myPanel" data-role="button" data-icon="bars" data-iconpos="notext">Open Panel</a>
+	<a href="cart.html" data-role="button">Open Cart</a>
+	<div data-role="header" data-theme="a" data-add-back-btn="true">
+		<h1>Resin</h1>
+	</div>
+	<div data-role="content" class="grid-container-resin">
+		<!-- Content of your Resin page -->
+		<h3>Choose your Resin</h3>
+		<p>Here you can purchase pre-made resins, or you can order a custom resin design of your choosing.</p>
+
+		<!-- Create a grid for resin items -->
+		<!-- Resin Item 1 -->
+		<div class="grid-item">
+			<img src="resin1.png" alt="Resin 1">
+			<p>Resin Item 1</p>
+			<a href="#" data-role="button" onclick="addToCart('Resin Item 1')" data-item="Resin Item 1">Add to Cart</a>
+		</div>
+
+		<!-- Resin Item 2 -->
+		<div class="grid-item">
+			<img src="resin2.png" alt="Resin 2">
+			<p>Resin Item 2</p>
+			<a href="#" data-role="button" onclick="addToCart('Resin Item 2')" data-item="Resin Item 2">Add to Cart</a>
+		</div>
+
+		<!-- ... Add more resin items ... -->
+
+	</div>
+	<div data-role="footer" data-theme="a">
+		<h4>3W's &copy; 2023</h4>
+	</div>
+</div>
+<script>
+	// Function to add an item to the cart (favorites)
+	function addToCart(itemName) {
+		// Check if the item is not already in the cart
+		var cart = getCart();
+		if (cart.indexOf(itemName) === -1) {
+			cart.push(itemName);
+			saveCart(cart);
+			refreshCartList();
+		}
+	}
+
+	// Function to retrieve cart items from localStorage
+	function getCart() {
+		var cart = JSON.parse(localStorage.getItem('cart')) || [];
+		return cart;
+	}
+
+	// Function to save cart items to localStorage
+	function saveCart(cart) {
+		localStorage.setItem('cart', JSON.stringify(cart));
+	}
+
+	// Function to refresh the cart list on the page
+	function refreshCartList() {
+		var cart = getCart();
+		var cartList = document.getElementById('cart-list');
+		cartList.innerHTML = ''; // Clear the existing cart list
+		cart.forEach(function(item) {
+			var li = document.createElement('li');
+			li.innerHTML = '<a href="#">' + item + '</a>';
+			cartList.appendChild(li);
+		});
+	}
+
+	// Call the function to initially populate the cart list on page load
+	refreshCartList();
+</script>
+
+<div id="section2" data-role="page" data-theme="a" data-add-back-btn="true" >
+	<a href="#myPanel" data-role="button" data-icon="bars" data-iconpos="notext">Open Panel</a>
+	<div data-role="header" data-theme="a" data-add-back-btn="true">
+		<h1>Paints</h1>
+	</div>
+	<div data-role="content">
+		<h3>Pre-Painted</h3>
+		<p> This Section will include paintings I have completed and selling.</p>
+		<h3>Create a Painting</h3>
+		<p> This section will describe how to go about ordering a custom painting.</p>
+	</div>
+	<div data-role="footer" data-theme="a">
+		<h4>3W's &copy; 2023
+		</h4>
+	</div>
+</div>
+
+<div id="section3" data-role="page" data-theme="a" data-add-back-btn="true">
+	<a href="#myPanel" data-role="button" data-icon="bars" data-iconpos="notext">Open Panel</a>
+	<div data-role="header" data-theme="a" data-add-back-btn="true">
+		<h1>Yarn</h1>
+	</div>
+	<div data-role="content">
+		<h3>Completed Yarn Work</h3>
+		<p> This will list and showcase completed Yarn work for sale. </p>
+		<h3>Custom Designs</h3>
+		<p> This will explain the process in custom yarn work. </p>
+	</div>
+	<div data-role="footer" data-theme="a" >
+		<h4>3W's &copy; 2023</h4>
+	</div>
+</div>
+
+<div id="section4" data-role="page" data-theme="a" data-add-back-btn="true">
+	<a href="#myPanel" data-role="button" data-icon="bars" data-iconpos="notext">Open Panel</a>
+	<div data-role="header" data-theme="a" data-add-back-btn="true">
+		<h1>Seasonal</h1>
+	</div>
+	<div data-role="content">
+		<h3>Seasonal</h3>
+		<p> This section will showcase seasonal items. </p>
+	</div>
+	<div data-role="footer" data-theme="a">
+		<h4>3W's &copy; 2023</h4>
+	</div>
+</div>
+<div data-role="page" id="section5" data-theme="a" data-add-back-btn="true">
+	<a href="#myPanel" data-role="button" data-icon="bars" data-iconpos="notext">Open Panel</a>
+	<div data-role="header" data-theme="a" data-add-back-btn="true">
+		<h1>About Me</h1>
+	</div>
+	<div data-role="content">
+		<h3>About Me and 3 W's</h3>
+		<p> This section will talk about me and why I started this website and art store. </p>
+	</div>
+	<div data-role="footer" data-theme="a">
+		<h4>3W's &copy; 2023</h4>
+	</div>
+</div>
+<div data-role="page" id="section6" data-theme="a" data-add-back-btn="true">
+	<a href="#myPanel" data-role="button" data-icon="bars" data-iconpos="notext">Open Panel</a>
+	<div data-role="header" data-theme="a" data-add-back-btn="true">
+		<h1>Checkout</h1>
+	</div>
+	<div data-role="content">Content</div>
+	<h4>Show Items Here</h4>
+	<div data-role="footer" data-theme="a">
+		<h4>Footer</h4>
+	</div>
+</div>
+
+<div id="section7" data-role="page" data-theme="a" data-add-back-btn="true">
+	<a href="#myPanel" data-role="button" data-icon="bars" data-iconpos="notext">Open Panel</a>
+	<div data-role="header" data-theme="a" data-add-back-btn="true">
+		<h1>Filtered List</h1>
+	</div>
+	<div data-role="content">
+		<h3>Header</h3>
+		<form class="ui-filterable">
+			<input id="filterBasic-input" data-type="search" placeholder="Search items...">
+		</form>
+		<ul data-role="listview" data-filter="true" data-input="#filterBasic-input" data-inset="true">
+			<li><a href="#">Item 1</a></li>
+			<li><a href="#">Item 2</a></li>
+			<li><a href="#">Item 3</a></li>
+			<li><a href="#">Item 4</a></li>
+			<li>
+				<a href="#">
+					<img src="/icons/info-black.png" alt="" style="width: 16px; height: 16px; float: left; margin-right: 10px;">
+					<span>Item with Icon</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+	<div data-role="footer" data-theme="a">
+		<h4>2023 &copy; TStilphen</h4>
+	</div>
+</div>
+
+<div id="section8" data-role="page" data-theme="a" data-add-back-btn="true">
+	<a href="#myPanel" data-role="button" data-icon="bars" data-iconpos="notext">Open Panel</a>
+	<div data-role="header" data-theme="a" data-add-back-btn="true">
+		<h1>Contact Us</h1>
+	</div>
+	<div data-role="content">
+		<h3>Enter your contact information:</h3>
+		<form id="contactForm">
+			<label for="fullName">Full Name:</label>
+			<input type="text" name="fullName" id="fullName" placeholder="Your Name" required>
+
+			<label for="email">Email:</label>
+			<input type="email" name="email" id="email" placeholder="Your Email" required>
+
+			<fieldset data-role="controlgroup">
+				<legend>Gender:</legend>
+				<input type="radio" name="gender" id="male" value="male">
+				<label for="male">Male</label>
+				<input type="radio" name="gender" id="female" value="female">
+				<label for="female">Female</label>
+			</fieldset>
+
+			<label for="country">Country:</label>
+			<select name="country" id="country">
+				<option value="usa">United States</option>
+				<option value="canada">Canada</option>
+				<option value="uk">United Kingdom</option>
+				<option value="other">Other</option>
+			</select>
+
+			<label for="message">Message:</label>
+			<textarea name="message" id="message" rows="4" placeholder="Your Message"></textarea>
+
+			<button type="submit" data-theme="b" class="ui-btn ui-corner-all">Submit</button>
+		</form>
+	</div>
+	<div data-role="footer" data-theme="a">
+		<h4>3W's &copy; 2023</h4>
+	</div>
+</div>
+
+<script>
+	// Event handler for form submission
+	$("#contactForm").submit(function (e) {
+		e.preventDefault(); // Prevent default form submission
+
+		// Get form values
+		var fullName = $("#fullName").val();
+		var email = $("#email").val();
+		var gender = $("input[name='gender']:checked").val();
+		var country = $("#country").val();
+		var message = $("#message").val();
+
+		// Create an object to store the data
+		var contactData = {
+			fullName: fullName,
+			email: email,
+			gender: gender,
+			country: country,
+			message: message,
+		};
+
+		// Convert object to JSON and store in localStorage
+		localStorage.setItem("contactData", JSON.stringify(contactData));
+
+		alert("Contact information saved!");
+
+		// Clear the form
+		$("#contactForm")[0].reset();
+	});
+</script>
+
+<div data-role="footer" data-theme="a">
+	<h4>3W's &copy; 2023</h4>
+</div>
+</div>
+
+<div data-role="footer" data-theme="a">
+	<h4>Footer</h4>
+</div>
+</div>
+<style>
+	/* CSS styles for the Resin page */
+	.grid-container-resin {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 20px;
+	}
+</style>
+<div data-role="panel" id="myPanel">
+	<h2>Navigation</h2>
+	<ul data-role="listview">
+		<li><a href="#page">Main Page</a></li>
+		<li><a href="#section1">Resin</a></li>
+		<li><a href="#section2">Paints</a></li>
+		<li><a href="#section3">Yarn</a></li>
+		<li><a href="#section4">Seasonal</a></li>
+		<li><a href="#section5">About Me</a></li>
+		<li><a href="#section6">Checkout</a></li>
+		<li><a href="#section7">Filtered List</a></li>
+		<li><a href="#section8">Form</a></li>
+	</ul>
+</div>
+
+<!-- Add a button to open the panel -->
+<a href="#myPanel" data-role="button" data-icon="bars" data-iconpos="notext">Open Panel</a>
+
+</body>
+</html>
